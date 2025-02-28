@@ -1,0 +1,45 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Modifier une Visite{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Modifier la Visite</h2>
+
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+    <div class="mb-3">
+        {{ form_label(form.diagnostic, 'Diagnostic', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.diagnostic, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.diagnostic) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.animal, 'Animal', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.animal, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(form.animal) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.veterinaire, 'Vétérinaire', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.veterinaire, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(form.veterinaire) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.dateVisite, 'Date de Visite', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.dateVisite, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.dateVisite) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    <a href="{{ path('app_visite_index') }}" class="btn btn-secondary">Retour</a>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

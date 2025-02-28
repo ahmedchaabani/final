@@ -1,0 +1,50 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <h1>Produit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ produit.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ produit.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ produit.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ produit.prix }}</td>
+            </tr>
+            <tr>
+                <th>Quantite_stock</th>
+                <td>{{ produit.quantiteStock }}</td>
+            </tr>
+            <tr>
+                <th>Categorie</th>
+                <td>{{ produit.categorie }}</td>
+            </tr>
+            <tr>
+                <th>Date_ajout</th>
+                <td>{{ produit.dateAjout ? produit.dateAjout|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fournisseur</th>
+                <td>{{ produit.fournisseur.nom }}</td> <!-- Assuming fournisseur has a 'nom' field -->
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_produit_index') }}">Back to list</a>
+
+    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">Edit</a>
+
+    {{ include('produit/_delete_form.html.twig') }}
+{% endblock %}

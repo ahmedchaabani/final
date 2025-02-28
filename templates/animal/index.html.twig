@@ -1,0 +1,46 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Animal Index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">Animal Index</h2>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Age</th>
+                <th>Type</th>
+                <th>Espeèce</th>
+                <th>Traitement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for animal in animals %}
+            <tr>
+                <td>{{ animal.id }}</td>
+                <td>{{ animal.nom }}</td>
+                <td>{{ animal.age }}</td>
+                <td>{{ animal.type }}</td>
+                <td>{{ animal.espece }}</td>
+                <td>{{ animal.traitement }}</td>
+                <td>
+                    <a href="{{ path('app_animal_show', {'id': animal.id}) }}" class="btn btn-info btn-sm">Show</a>
+                    <a href="{{ path('app_animal_edit', {'id': animal.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_animal_new') }}" class="btn btn-success">Create New</a>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Ajouter Veterinaire{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .form-group label {
+            color: black !important;
+            font-size:20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <div class="form-box">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+        <h3>{{ form.vars.data.IdE is null ? 'Ajout Echantillon' : 'Modifier Echantillon' }}</h3>
+
+        {% for flash_error in app.flashes('error') %}
+            <div class="alert alert-danger">{{ flash_error }}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            {{ form_label(form.code_x, 'Code X') }}
+            {{ form_widget(form.code_x, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.code_x) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.type_e, 'Type') }}
+            {{ form_widget(form.type_e, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.type_e) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.collection_date, 'Date de collecte') }}
+            {{ form_widget(form.collection_date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.collection_date) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.origin, 'Origine') }}
+            {{ form_widget(form.origin, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.origin) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.status, 'Statut') }}
+            {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.status) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            {{ form.vars.data.IdE is null ? 'Ajouter' : 'Modifier' }}
+        </button>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

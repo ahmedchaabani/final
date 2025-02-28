@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/cssback/styles.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    <div class="grid-container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="menu-icon" onclick="openSidebar()">
+                <span class="material-icons-outlined">menu</span>
+            </div>
+            <div class="header-left">
+                <span class="material-icons-outlined">search</span>
+            </div>
+            <div class="header-right">
+                <span class="material-icons-outlined">notifications</span>
+                <span class="material-icons-outlined">email</span>
+                <span class="material-icons-outlined">account_circle</span>
+            </div>
+        </header>
+        <!-- End Header -->
+
+        <!-- Sidebar -->
+        <aside id="sidebar">
+    <div class="sidebar-title">
+        <div class="sidebar-brand">
+        <a href="{{ path('app_dash') }}">
+                <span class="material-icons-outlined"></span> AGRONOMIX
+            </a>
+        </div>
+        <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+    </div>
+
+    <ul class="sidebar-list">
+        </li>
+
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_user_index') }}">
+                <span class="material-icons-outlined">person</span> utilistateurs
+            </a>
+        </li>
+
+        <!-- Add Echantillons Button -->
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_main') }}">
+                <span class="material-icons-outlined">biotech</span> Echantillons
+            </a>
+        </li>
+        <!-- Other Menu Items -->
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_main1') }}">
+                <span class="material-icons-outlined">poll</span> Analyses
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_animal_index') }}">
+                <span class="material-icons-outlined">pets</span> Animals
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_visite_index') }}">
+                <span class="material-icons-outlined">medical_services</span> Visites
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_veterinaire_index') }}">
+                <span class="material-icons-outlined">person</span> Vétérinaires
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_produit_index') }}">
+                <span class="material-icons-outlined">inventory_2</span> Produits
+            </a>
+        </li>
+
+        <li class="sidebar-list-item">
+            <a href="{{ path('app_fournisseur_index') }}">
+                <span class="material-icons-outlined">person</span> fournisseurs
+            </a>
+        </li>
+        
+    </ul>
+</aside>
+        <!-- End Sidebar -->
+
+        <!-- Main -->
+        <main class="main-container">
+            {% block body %}{% endblock %}
+        </main>
+        <!-- End Main -->
+
+    </div>
+
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ asset('js/scripts.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

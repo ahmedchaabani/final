@@ -1,0 +1,17 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+echantillons:
+    path: /echantillons
+    controller: App\Controller\EchantillonController::index
+
+front:
+    path: /front
+    controller: App\Controller\FrontController::index
+
+home:
+    path: /home
+    controller: App\Controller\HomeController::index

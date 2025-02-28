@@ -1,0 +1,64 @@
+{% extends "dash.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .form-group label {
+            color: black !important;
+            font-size:20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <div class="form-box">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <h3>{{ form.vars.data.idanalyse is null ? 'Ajout Analyse' : 'Modifier Analyse' }}</h3>
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            {{ form_label(form.typeE, 'Type') }}
+            {{ form_widget(form.typeE, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-messages">
+                {{ form_errors(form.typeE) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.result, 'Résultat') }}
+            {{ form_widget(form.result, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-messages">
+                {{ form_errors(form.result) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.date_performed, 'Date de réalisation') }}
+            {{ form_widget(form.date_performed, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-messages">
+                {{ form_errors(form.date_performed) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+        {{ form_label(form.IdUser, 'User') }}
+        {{ form_widget(form.IdUser, {'attr': {'class': 'form-control'}}) }}
+        <div class="error-messages">
+        {{ form_errors(form.IdUser) }}
+        </div>
+        
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            {{ form.vars.data.idanalyse is null ? 'Ajouter' : 'Modifier' }}
+        </button>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

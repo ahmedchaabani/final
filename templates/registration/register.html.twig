@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+{% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center my-4">Inscription</h1>
+
+        {# Affichage des erreurs générales du formulaire #}
+        {% if registrationForm.vars.errors|length > 0 %}
+            <div class="alert alert-danger">
+                {{ form_errors(registrationForm) }}
+            </div>
+        {% endif %}
+
+        {# Début du formulaire avec désactivation de la validation HTML5 côté client #}
+        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+            {# Affichage des champs un par un, sans regroupement #}
+            {{ form_row(registrationForm.email, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+
+            {{ form_row(registrationForm.nom, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+
+            {{ form_row(registrationForm.prenom, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+
+            {{ form_row(registrationForm.telephone, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+
+            {{ form_row(registrationForm.adresse, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+
+        {# Champ Mot de passe #}
+        <div class="mb-3">
+            {{ form_label(registrationForm.plainPassword.first) }}
+            {{ form_widget(registrationForm.plainPassword.first) }}
+            {{ form_help(registrationForm.plainPassword.first) }}
+            {{ form_errors(registrationForm.plainPassword.first) }}
+        </div>
+
+        {# Champ Confirmation #}
+        <div class="mb-3">
+            {{ form_label(registrationForm.plainPassword.second) }}
+            {{ form_widget(registrationForm.plainPassword.second) }}
+            {{ form_errors(registrationForm.plainPassword.second) }}
+        </div>
+
+            {{ form_row(registrationForm.agreeTerms, {
+                'attr': {'class': 'form-check-input'},
+                'label_attr': {'class': 'form-check-label'}
+            }) }}
+
+            {# Bouton d'envoi du formulaire #}
+            <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
+
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

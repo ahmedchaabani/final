@@ -1,0 +1,34 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Vétérinaire Details{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-primary mb-4">Détails du Vétérinaire</h2>
+
+    <div class="card shadow-lg p-4">
+        <div class="card-body">
+            <h4 class="card-title">{{ veterinaire.nom }} {{ veterinaire.prenom }}</h4>
+            <p><strong>Spécialité:</strong> {{ veterinaire.specialite }}</p>
+            <p><strong>Email:</strong> <a href="mailto:{{ veterinaire.email }}">{{ veterinaire.email }}</a></p>
+            <p><strong>Téléphone:</strong> {{ veterinaire.telephone }}</p>
+            <p><strong>Disponibilité:</strong> 
+                <span class="badge {{ veterinaire.disponibilite ? 'bg-success' : 'bg-danger' }}">
+                    {{ veterinaire.disponibilite ? 'Disponible' : 'Non Disponible' }}
+                </span>
+            </p>
+
+            <div class="mt-4">
+                <a href="{{ path('app_veterinaire_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                <a href="{{ path('app_veterinaire_edit', {'id': veterinaire.id}) }}" class="btn btn-warning">Modifier</a>
+                {{ include('veterinaire/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

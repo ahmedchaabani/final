@@ -1,0 +1,14 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+    <h1>Edit Your Profile</h1>
+
+    {{ include('user/front/_form_front.html.twig', {'button_label': 'Update'}) }}  {# Use custom form #}
+
+    <a href="{{ path('app_user_showw', {'id': user.id}) }}">Back to Profile</a>
+
+    
+{% endblock %}

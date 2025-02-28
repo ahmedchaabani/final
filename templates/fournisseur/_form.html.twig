@@ -1,0 +1,32 @@
+{% block body %}
+    <h1>{% if button_label is defined %}{{ button_label }}{% else %}Create new Fournisseur{% endif %}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {% for error in form.nom.vars.errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
+        {{ form_row(form.email) }}
+        {% for error in form.email.vars.errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
+        {{ form_row(form.telephone) }}
+        {% for error in form.telephone.vars.errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
+        {{ form_row(form.lieu) }}
+        {% for error in form.lieu.vars.errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
+        {{ form_row(form.date_enregistrement) }}
+        {% for error in form.date_enregistrement.vars.errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
+        <button class="btn btn-primary">{{ button_label|default('Create') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

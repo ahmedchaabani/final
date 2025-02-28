@@ -1,0 +1,82 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+<div class="row">
+    {# Colonne de gauche #}
+    <div class="col-md-6">
+        {# Email #}
+        <div class="mb-3">
+            {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        {# Nom #}
+        <div class="mb-3">
+            {{ form_label(form.nom, 'Nom *', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        {# Prénom #}
+        <div class="mb-3">
+            {{ form_label(form.prenom, 'Prénom *', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+    </div>
+
+    {# Colonne de droite #}
+    <div class="col-md-6">
+        {# Téléphone #}
+        <div class="mb-3">
+            {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.telephone) }}
+        </div>
+
+        {# Adresse #}
+        <div class="mb-3">
+            {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.adresse) }}
+        </div>
+
+        {# Mot de passe (si applicable) #}
+        {% if form.plainPassword is defined %}
+        <div class="mb-3">
+            {{ form_label(form.plainPassword, 'Mot de passe' ~ (form.plainPassword.vars.required ? ' *'), {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.plainPassword) }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{# Date d'inscription #}
+<div class="mb-3">
+    {{ form_label(form.dateInscription, 'Date d\'inscription', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.dateInscription, {'attr': {'class': 'form-control bg-light', 'readonly': 'readonly'}}) }}
+</div>
+
+{# Rôles #}
+<div class="mb-4">
+    <label class="form-label">Rôles *</label>
+    <div class="border p-3 rounded">
+        {% for role in form.roles %}
+            <div class="form-check">
+                {{ form_widget(role, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(role, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+        {% endfor %}
+    </div>
+    {{ form_errors(form.roles) }}
+</div>
+
+{# Bouton de soumission #}
+<div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary btn-lg">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
+{{ form_end(form) }}

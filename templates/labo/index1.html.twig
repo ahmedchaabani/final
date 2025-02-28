@@ -1,0 +1,44 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Analyse Index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">Analyse Table</h2>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Result</th>
+                <th>Date Performée</th>
+                <th>iduser</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for analyse in analyses %}
+            <tr>
+                <td>{{ analyse.idanalyse }}</td>
+                <td>{{ analyse.TypeE }}</td>
+                <td>{{ analyse.Result }}</td>
+                <td>{{ analyse.DatePerformed|date('Y-m-d') }}</td>
+                <td>{{ analyse.IdUser.id }}</td>
+                <td>
+                    <a href="{{ path('supp-analyse', {'idanalyse': analyse.idanalyse}) }}" class="btn btn-danger btn-sm">supprimer</a>
+                    <a href="{{ path('edit-analyse', {'idanalyse': analyse.idanalyse}) }}" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('create-analyse') }}" class="btn btn-success">Create New</a>
+</div>
+{% endblock %}

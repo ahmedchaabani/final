@@ -1,0 +1,59 @@
+{% extends 'dash.html.twig' %}
+
+{% block title %}Ajouter Veterinaire{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Créer un nouvel animal</h2>
+
+    <div class="card shadow p-4">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+        <div class="col-md-6">
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.age, 'Âge', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.age, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.age, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.type, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.espece, 'Espèce', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.espece, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.espece, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-12">
+            {{ form_label(form.traitement, 'Traitement', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.traitement, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.traitement, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-12">
+            {{ form_label(form.veterinaire, 'Vétérinaire', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.veterinaire, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.veterinaire, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-success fw-bold px-4">Enregistrer</button>
+            <a href="{{ path('app_animal_index') }}" class="btn btn-outline-secondary fw-bold px-4">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
