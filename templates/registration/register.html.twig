@@ -67,6 +67,17 @@
                 'attr': {'class': 'form-check-input'},
                 'label_attr': {'class': 'form-check-label'}
             }) }}
+               <div class="col-xl-6">
+    <div class="login__form">
+        {{ form_label(registrationForm.captcha) }}
+        <div class="captcha-container">
+            {{ form_widget(registrationForm.captcha) }}
+        </div>
+        {% for error in registrationForm.captcha.vars.errors %}
+            <div class="text-danger">{{ error.message }}</div>
+        {% endfor %}
+    </div>
+</div>
 
             {# Bouton d'envoi du formulaire #}
             <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>

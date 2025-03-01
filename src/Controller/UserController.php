@@ -11,15 +11,36 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/user')]
 final class UserController extends AbstractController
 {
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    public function index(Request $request, UserRepository $userRepository): Response
     {
+        // Récupérer les paramètres de la requête
+        $verified = $request->query->get('verified'); // Paramètre de vérification (1 ou 0)
+        $name = $request->query->get('name', ''); // Recherche par nom (par défaut vide)
+    
+        // Créer un tableau de critères pour la recherche
+        $criteria = [];
+    
+        if ($verified !== null) {
+            // Si un filtre "verified" est passé, nous l'ajoutons aux critères
+            $criteria['isVerified'] = (bool) $verified;
+        }
+    
+        if (!empty($name)) {
+            // Si un nom est passé, ajoutez-le également comme critère de recherche
+            $users = $userRepository->searchByNameAndStatus($name, $criteria['isVerified'] ?? null);
+        } else {
+            // Sinon, si aucun nom n'est fourni, nous appliquons seulement le filtre de vérification
+            $users = $userRepository->findBy($criteria);
+        }
+    
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
         ]);
     }
 
@@ -113,6 +134,8 @@ public function showFront(User $user): Response
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+
+            
             $entityManager->flush();
             return $this->redirectToRoute('app_user_showw', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
@@ -133,4 +156,40 @@ public function showFront(User $user): Response
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/filter', name: 'filter', methods: ['GET'])]
+    public function getUsersByStatus(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $verified = $request->query->getBoolean('verified');
+        $users = $userRepository->findBy(['verified' => $verified]);
+
+        return $this->json($users);
+    }
+
+    #[Route('/search', name: 'search', methods: ['GET'])]
+    public function searchUsers(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $name = $request->query->get('name', '');
+        $verified = $request->query->getBoolean('verified');
+
+        $users = $userRepository->searchByNameAndStatus($name, $verified);
+
+        return $this->json($users);
+    }
+
+    #[Route('/statistics', name: 'app_pie', methods: ['GET'])]
+    public function dashboard(UserRepository $userRepository): Response
+    {
+        // Compter les utilisateurs par rôle
+        $rolesCount = [
+            'Admin' => $userRepository->countUsersByRole('ROLE_ADMIN'),
+            'Client' => $userRepository->countUsersByRole('ROLE_Client'),
+            'User' => $userRepository->countUsersByRole('ROLE_USER'),
+        ];
+    
+        return $this->render('user/index1.html.twig', [
+            'rolesCount' => $rolesCount,
+        ]);
+    } 
+
 }

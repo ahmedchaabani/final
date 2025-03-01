@@ -33,8 +33,10 @@ security:
 
     # Easy way to control access for large sections of your site
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+          - { path: ^/dash, roles: ROLE_ADMIN }
+          - { path: ^/dash, roles: ROLE_CLIENT, allow_if: false } 
+          - { path: ^/dash, roles: ROLE_USER, allow_if: false }
+          - { path: ^/front2, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

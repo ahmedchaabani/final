@@ -173,7 +173,7 @@ public function createAnalyse(Request $request): Response
         ]);
     }
 
-    #[IsGranted('ROLE_CLIENT')]
+   
     #[Route('/analysesfront', name: 'app_main1_front')]
 public function index1f(): Response
 {

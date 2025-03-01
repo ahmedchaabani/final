@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType; // Ajoutez cette ligne
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -26,11 +28,23 @@ class RegistrationFormType extends AbstractType
             ->add('prenom', TextType::class) // Prénom
             ->add('telephone', TelType::class, ['required' => false]) // Téléphone
             ->add('adresse', TextType::class, ['required' => false])
+            ->add('profilePicture', FileType::class, [
+                'label' => 'Photo de profil',
+                'required' => false,
+                'mapped' => false, // ce champ ne sera pas lié à une propriété directement
+                'attr' => ['accept' => 'image/*']
+            ])
             ->add('dateInscription', DateTimeType::class, [
                 'widget' => 'single_text',
                 'data' => new \DateTime(), // Définit la date et heure actuelles par défaut
                 'required' => false,
                 'disabled' => true, // Rendre le champ non modifiable
+            ])
+            ->add('captcha', CaptchaType::class, [
+                'width' => 200,
+                'height' => 50,
+                'length' => 6,
+                'attr' => ['class' => 'common__login__input']
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -65,6 +79,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'error_bubbling' => false // Crucial pour afficher les erreurs au bon endroit
             ])
+
         ;
     }
 

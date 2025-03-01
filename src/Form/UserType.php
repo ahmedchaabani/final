@@ -46,6 +46,7 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('isVerified')
+            
         ;
     }
 

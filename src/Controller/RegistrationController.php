@@ -15,6 +15,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -30,6 +31,27 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+                        // Récupérer le fichier téléchargé
+            /** @var UploadedFile $profilePicture */
+            $profilePicture = $form->get('profilePicture')->getData();
+
+            if ($profilePicture) {
+                // Générer un nom unique pour la photo
+                $newFilename = uniqid() . '.' . $profilePicture->guessExtension();
+
+                // Déplacer le fichier vers le répertoire public
+                try {
+                    $profilePicture->move(
+                        $this->getParameter('profile_pictures_directory'),
+                        $newFilename
+                    );
+                } catch (IOExceptionInterface $e) {
+                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
+                }
+
+                // Sauvegarder le nom du fichier dans l'entité User
+                $user->setProfilePicture($newFilename);
+            }
             $user->setDateInscription(new \DateTime());
             $user->setRoles(['ROLE_CLIENT']);
             /** @var string $plainPassword */
@@ -44,7 +66,7 @@ class RegistrationController extends AbstractController
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('ahmedchaabani715@gmail.com', 'ahmed'))
+                    ->from(new Address('oussemawarghi23@gmail.com', 'oussema'))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

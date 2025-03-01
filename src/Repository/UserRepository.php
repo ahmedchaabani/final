@@ -57,4 +57,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function searchByNameAndStatus(string $name, ?bool $isVerified)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.nom LIKE :name')
+            ->setParameter('name', "%$name%");
+    
+        // Ajouter un filtre pour l'état de vérification, si spécifié
+        if ($isVerified !== null) {
+            $qb->andWhere('u.isVerified = :isVerified')
+               ->setParameter('isVerified', $isVerified);
+        }
+    
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countUsersByRole(string $role)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where(':role = u.roles') // Assuming roles is an array of strings
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Security;
-
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,10 +47,15 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
+        $user = $token->getUser();
 
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-       return new RedirectResponse($this->urlGenerator->generate('index2'));
+        if(in_array('ROLE_ADMIN',$user->getRoles(),true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_dash'));
+        }
+        
+        return new RedirectResponse($this->urlGenerator->generate('index2'));
     }
 
     protected function getLoginUrl(Request $request): string

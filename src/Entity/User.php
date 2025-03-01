@@ -108,7 +108,20 @@ private ?\DateTimeInterface $dateInscription = null;
 
     #[ORM\Column]
     private bool $isVerified = false;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
 
+    // Getter et setter pour profilePicture
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

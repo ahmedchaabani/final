@@ -1,0 +1,86 @@
+{% extends 'dash.html.twig' %}
+
+{% block body %}
+    <!-- Wrapper for centering the chart -->
+    <div class="chart-container">
+        <!-- Canvas for the Pie Chart with reduced size -->
+        <canvas id="rolesChart" width="80" height="80"></canvas>
+    </div>
+    
+    <!-- Include Chart.js before initializing the chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+    var ctx = document.getElementById('rolesChart').getContext('2d');
+    var rolesChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Admin', 'Client', 'User'],
+            datasets: [{
+                label: 'Nombre d\'utilisateurs par rôle',
+                data: [
+                    {{ rolesCount['Admin'] ?? 0 }},
+                    {{ rolesCount['CLIENT'] ?? 0 }},
+                    {{ rolesCount['USER'] ?? 0 }}
+                ],
+                backgroundColor: [
+                    '#6A4E9C',   // Color for Admin
+                    '#8B7B8B',   // Slightly lighter mauve for Docteur
+                    '#D2A7D6'    // A more pastel-like color for Femme Enceinte
+                ],
+                hoverBackgroundColor: [
+                    '#5B3E82',   // Darker shade for Admin hover
+                    '#7A6D6D',   // Darker shade for Docteur hover
+                    '#B98CC6'    // Darker pastel for Femme Enceinte hover
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        boxWidth: 15, // Adjusted the legend box size to fit the smaller chart
+                        padding: 8,  // Reduced padding around legend items
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateRotate: true,  // Rotate animation for Pie chart
+                animateScale: true,   // Scale animation for Pie chart
+            }
+        }
+    });
+    </script>
+
+    <style>
+        /* Style for centering the chart container */
+        .chart-container {
+            display: flex;
+            justify-content: center;  /* Center horizontally */
+            align-items: center;      /* Center vertically */
+            height: 100vh;            /* Full viewport height */
+            padding: 20px;            /* Padding around the chart */
+        }
+
+        /* Optional: Style the canvas to have a smooth border radius for aesthetics */
+        #rolesChart {
+            border-radius: 10px; /* Rounded corners for a modern look */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom-in effect on hover */
+        }
+
+        #rolesChart:hover {
+            transform: scale(1.1); /* Slight zoom effect on hover */
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); /* Slightly bigger shadow on hover for more emphasis */
+        }
+    </style>
+{% endblock %}
