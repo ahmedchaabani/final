@@ -47,14 +47,7 @@ class EchantillonType extends AbstractType
             ],
             ])
 
-            ->add('origin', TextType::class, [
-                'label' => 'Origine',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Entrer Origine de cet echantillon',
-                    'class' => 'form-control'
-                ]
-            ])
+            ->add('origin')
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'in pending' => 'in pending',

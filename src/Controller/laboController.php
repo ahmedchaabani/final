@@ -12,6 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\Writer\PngWriter;
 
 
 final class laboController extends AbstractController
@@ -173,7 +179,7 @@ public function createAnalyse(Request $request): Response
         ]);
     }
 
-   
+    #[IsGranted('ROLE_CLIENT')]
     #[Route('/analysesfront', name: 'app_main1_front')]
 public function index1f(): Response
 {
@@ -298,6 +304,49 @@ public function createAnalysef(Request $request): Response
         return $this->redirectToRoute('app_main1_front');
     }
 
+    #[Route('/echantillon/qr/{IdE}', name: 'generate_qr')]
+    public function generateQrCode(int $IdE, EntityManagerInterface $entityManager): Response
+    {
+        // Fetch the echantillon from the database
+        $echantillon = $entityManager->getRepository(Echantillon::class)->find($IdE);
     
+        if (!$echantillon) {
+            throw $this->createNotFoundException('Echantillon not found.');
+        }
+    
+        // Prepare data for QR code
+        $data = sprintf(
+            "ID: %d\nCodeX: %s\nType: %s\nDate: %s\nOrigine: %s\nStatus: %s",
+            $echantillon->getIdE(),
+            $echantillon->getCodeX(),
+            $echantillon->getTypeE(),
+            $echantillon->getCollectionDate()->format('Y-m-d'),
+            $echantillon->getOrigin(),
+            $echantillon->getStatus()
+        );
+    
+        // Generate QR Code
+        $qrCode = Builder::create()
+            ->writer(new PngWriter())
+            ->data($data)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
+            ->size(300)
+            ->margin(10)
+            ->labelText('Echantillon QR')
+            ->labelFont(new NotoSans(12))
+            ->build();
+    
+        return new Response($qrCode->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
+    }
+
+
+
+
+
+
 
 }
+
+    
+

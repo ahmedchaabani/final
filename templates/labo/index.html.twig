@@ -11,6 +11,33 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-primary">Echantillons Table</h2>
 
+    <!-- Search & Filter Section -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="searchInput" class="form-label">Search by ID or CodeX:</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter ID or CodeX...">
+        </div>
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Filter by Status:</label>
+            <select id="statusFilter" class="form-select">
+                <option value="">All</option>
+                {% for echantillon in echantillons %}
+                    {% if loop.first or echantillon.Status not in echantillons[:loop.index0]|map(e => e.Status) %}
+                        <option value="{{ echantillon.Status }}">{{ echantillon.Status }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="sortDate" class="form-label">Sort by Collection Date:</label>
+            <select id="sortDate" class="form-select">
+                <option value="">Default</option>
+                <option value="asc">Oldest First</option>
+                <option value="desc">Newest First</option>
+            </select>
+        </div>
+    </div>
+
     <table class="table table-bordered table-hover shadow-sm">
         <thead class="table-dark">
             <tr>
@@ -23,9 +50,9 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="echantillonsTable">
             {% for echantillon in echantillons %}
-            <tr>
+            <tr data-status="{{ echantillon.Status }}" data-id="{{ echantillon.IdE }}" data-codex="{{ echantillon.CodeX }}" data-date="{{ echantillon.getCollectionDate()|date('Y-m-d') }}">
                 <td>{{ echantillon.IdE }}</td>
                 <td>{{ echantillon. CodeX }}</td>
                 <td>{{ echantillon.TypeE }}</td>
@@ -35,6 +62,7 @@
                 <td>
                     <a href="{{ path('supp-echantillon', {'IdE': echantillon.IdE}) }}" class="btn btn-danger btn-sm">supprimer</a>
                     <a href="{{ path('edit-echantillon', {'IdE': echantillon.IdE}) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ path('generate_qr', {'IdE': echantillon.IdE}) }}" class="btn btn-info btn-sm">QR Code</a>
                 </td>
             </tr>
             {% endfor %}
@@ -43,4 +71,50 @@
 
     <a href="{{ path('create-echantillon') }}" class="btn btn-success">Create New</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var searchInput = document.getElementById("searchInput");
+        var statusFilter = document.getElementById("statusFilter");
+        var sortDate = document.getElementById("sortDate");
+        var tbody = document.getElementById("echantillonsTable");
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+
+        function filterTable() {
+            var searchText = searchInput.value.toLowerCase();
+            var selectedStatus = statusFilter.value.toLowerCase();
+
+            rows.forEach(row => {
+                var id = row.getAttribute("data-id").toLowerCase();
+                var codex = row.getAttribute("data-codex").toLowerCase();
+                var status = row.getAttribute("data-status").toLowerCase();
+
+                var matchesSearch = searchText === "" || id.includes(searchText) || codex.includes(searchText);
+                var matchesStatus = selectedStatus === "" || status === selectedStatus;
+
+                row.style.display = matchesSearch && matchesStatus ? "" : "none";
+            });
+        }
+
+        function sortTable() {
+            var sortOrder = sortDate.value;
+
+            if (sortOrder === "") return; // Do nothing if default
+
+            rows.sort((a, b) => {
+                var dateA = new Date(a.getAttribute("data-date"));
+                var dateB = new Date(b.getAttribute("data-date"));
+
+                return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+            });
+
+            // Append sorted rows back to the table
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        searchInput.addEventListener("keyup", filterTable);
+        statusFilter.addEventListener("change", filterTable);
+        sortDate.addEventListener("change", sortTable);
+    });
+</script>
 {% endblock %}
