@@ -20,6 +20,10 @@ use Endroid\QrCode\Label\Font\NotoSans;
 use Endroid\QrCode\Writer\PngWriter;
 
 
+
+
+
+
 final class laboController extends AbstractController
 {
     private $em;
