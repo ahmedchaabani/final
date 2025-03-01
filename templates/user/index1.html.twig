@@ -1,6 +1,9 @@
 {% extends 'dash.html.twig' %}
 
 {% block body %}
+    <h2 style="text-align: center; margin-bottom: 20px; color: #6A4E9C;">
+        Répartition des Utilisateurs par Rôle
+    </h2>
     <!-- Wrapper for centering the chart -->
     <div class="chart-container">
         <!-- Canvas for the Pie Chart with reduced size -->
@@ -20,8 +23,8 @@
                 label: 'Nombre d\'utilisateurs par rôle',
                 data: [
                     {{ rolesCount['Admin'] ?? 0 }},
-                    {{ rolesCount['CLIENT'] ?? 0 }},
-                    {{ rolesCount['USER'] ?? 0 }}
+                    {{ rolesCount['Client'] ?? 0 }},
+                    {{ rolesCount['User'] ?? 0 }}
                 ],
                 backgroundColor: [
                     '#6A4E9C',   // Color for Admin

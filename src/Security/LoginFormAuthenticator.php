@@ -19,19 +19,37 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
+    private UserRepository $userRepository;
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        UserRepository $userRepository
+    ) {
+        $this->userRepository = $userRepository;
     }
+    
 
     public function authenticate(Request $request): Passport
     {
+        
         $email = $request->getPayload()->getString('email');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+    // Récupérer l'utilisateur depuis la base de données
+    $userBadge = new UserBadge($email, function ($userIdentifier) {
+        return $this->userRepository->findOneBy(['email' => $userIdentifier]);
+    });
 
+    // Vérifier si l'utilisateur est vérifié
+    $user = $this->userRepository->findOneBy(['email' => $email]);
+
+    if (!$user || !$user->isVerified()) {
+        throw new \Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException(
+            'Votre compte n\'est pas encore vérifié.'
+        );
+    }
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->getPayload()->getString('password')),

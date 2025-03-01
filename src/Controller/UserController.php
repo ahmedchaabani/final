@@ -84,14 +84,14 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    /*#[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
 public function show(User $user): Response
 {
     // Back office show (with "back to list" link)
     return $this->render('user/show.html.twig', [
         'user' => $user,
     ]);
-}
+}*/
 
 #[Route('/front/{id}', name: 'app_user_showw', methods: ['GET'])]
 public function showFront(User $user): Response
@@ -176,14 +176,14 @@ public function showFront(User $user): Response
 
         return $this->json($users);
     }
-
-    #[Route('/statistics', name: 'app_pie', methods: ['GET'])]
+    #[Route('/pie', name: 'app_pie')]
     public function dashboard(UserRepository $userRepository): Response
     {
+        
         // Compter les utilisateurs par rôle
         $rolesCount = [
             'Admin' => $userRepository->countUsersByRole('ROLE_ADMIN'),
-            'Client' => $userRepository->countUsersByRole('ROLE_Client'),
+            'Client' => $userRepository->countUsersByRole('ROLE_CLIENT'),
             'User' => $userRepository->countUsersByRole('ROLE_USER'),
         ];
     
@@ -191,5 +191,6 @@ public function showFront(User $user): Response
             'rolesCount' => $rolesCount,
         ]);
     } 
+
 
 }
