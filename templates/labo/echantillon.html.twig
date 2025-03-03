@@ -41,11 +41,16 @@
             {{ form_errors(form.collection_date) }}
         </div>
 
+
+
         <div class="form-group">
-            {{ form_label(form.origin, 'Origine') }}
-            {{ form_widget(form.origin, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.origin) }}
-        </div>
+    {{ form_label(form.origin, 'Origine') }}
+    <input id="origin-input" type="text" class="form-control" placeholder="Cliquez sur la carte" readonly>
+    {{ form_widget(form.origin, {'attr': {'style': 'display: none;'}}) }}
+    <div id="map" style="height: 300px; width: 100%; margin-top: 10px; border: 1px solid #ccc;"></div>
+</div>
+
+
 
         <div class="form-group">
             {{ form_label(form.status, 'Statut') }}
@@ -60,4 +65,52 @@
         {{ form_end(form) }}
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var map = L.map("map").setView([36.8065, 10.1815], 10); // Default: Tunis
+
+        // Check if the map div exists
+        if (!document.getElementById("map")) {
+            console.error("Error: Map container not found.");
+            return;
+        }
+
+        // Load OpenStreetMap tiles
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        var marker;
+
+        function updateInput(lat, lng) {
+            var locationString = lat.toFixed(6) + ", " + lng.toFixed(6);
+            document.getElementById("origin-input").value = locationString;
+            document.querySelector("input[name='{{ form.origin.vars.full_name }}']").value = locationString;
+        }
+
+        // Handle map click
+        map.on("click", function (e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(map);
+            updateInput(e.latlng.lat, e.latlng.lng);
+        });
+
+        console.log("Map initialized successfully.");
+    });
+</script>
+
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
+
+
+
 {% endblock %}

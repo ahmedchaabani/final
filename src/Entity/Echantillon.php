@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity(repositoryClass: EchantillonRepository::class)]
 class Echantillon
 {
@@ -39,13 +40,6 @@ class Echantillon
     private ?\DateTimeInterface $collection_date = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'origine est obligatoire")]
-    #[Assert\Length(
-        min: 3,
-        max: 15,
-        minMessage: "L'origine' doit contenir au moins {{ limit }} caractères.",
-        maxMessage: "L'origine' ne doit pas dépasser {{ limit }} caractères."
-    )]
     private ?string $origin = null;
 
     #[ORM\Column(length: 255)]
