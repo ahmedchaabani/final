@@ -1,0 +1,23 @@
+{# templates/user/search.html.twig #}
+
+<input type="text" id="searchInput" placeholder="Rechercher un utilisateur...">
+<ul id="userList"></ul>
+
+<script>
+document.getElementById("searchInput").addEventListener("input", function() {
+    let query = this.value;
+
+    fetch(`/search/search-users?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            let userList = document.getElementById("userList");
+            userList.innerHTML = ""; // Vider la liste avant d'afficher les nouveaux résultats
+
+            data.forEach(user => {
+                let li = document.createElement("li");
+                li.textContent = `${user.name} (${user.email})`;
+                userList.appendChild(li);
+            });
+        });
+});
+</script>

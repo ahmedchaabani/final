@@ -45,11 +45,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     // Vérifier si l'utilisateur est vérifié
     $user = $this->userRepository->findOneBy(['email' => $email]);
 
-    if (!$user || !$user->isVerified()) {
+    /*if (!$user || !$user->isVerified()) {
         throw new \Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException(
             'Votre compte n\'est pas encore vérifié.'
         );
-    }
+    }*/
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->getPayload()->getString('password')),
