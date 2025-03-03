@@ -68,9 +68,20 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="{{ path('app_logout') }}">log out</a>
-      <a class="btn-getstarted" href="{{ path('app_user_showw', {'id': user.id}) }}">Show</a>
-      <a class="btn-getstarted" href="{{ path('app_user_edit2', {'id': user.id}) }}">edit</a>
+      
+
+      <div class="dropdown ps-3">
+  <button class="btn btn-get-started dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-person-circle"></i> {# Bootstrap user icon #}
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="userDropdown">
+    <li><a class="dropdown-item" href="{{ path('app_user_showw', {'id': user.id}) }}">Profile</a></li>
+    <li><a class="dropdown-item" href="{{ path('app_user_edit2', {'id': user.id}) }}">Modification</a></li>
+    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a></li>
+  </ul>
+</div>
+
+
 
 
     </div>
