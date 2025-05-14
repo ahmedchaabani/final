@@ -4,8 +4,10 @@
 **École : Esprit School of Engineering**
 
 ## 📌 Description
-[Brève description du projet ici. Exemple :]  
+ 
 "Application de gestion de tâches avec clients Java et Web communiquant via une base de données MySQL."
 
----
-*À compléter avec les étapes suivantes.*
+
+Client Web responsive permettant de [résumé des fonctionnalités].  
+**Technologies** : React, Node.js, MongoDB.  
+**Contexte** : Projet développé dans le cadre du module *Projet Intégré* à Esprit School of Engineering.
